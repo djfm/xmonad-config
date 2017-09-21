@@ -1,4 +1,6 @@
 import XMonad
+import XMonad.Layout.Tabbed
+import XMonad.Hooks.ManageDocks
 import XMonad.Config.Xfce
 import Data.Monoid
 import XMonad.Util.EZConfig
@@ -28,7 +30,13 @@ main = xmonad $ xfceConfig {
   workspaces          = aWorkspaceNames ++ bWorkspaceNames,
   normalBorderColor   = "gray",
   focusedBorderColor  = "black",
-  manageHook          = manageHook xfceConfig <+> myManageHook
+  manageHook          = manageHook xfceConfig <+> myManageHook,
+  layoutHook          = avoidStruts(
+                        simpleTabbed
+                        ||| Tall 1 0.03 0.5
+                        ||| Mirror (Tall 1 0.03 0.5)
+                        ||| Full
+                      )
 } `additionalKeys` myKeyBindings
 
 myKeyBindings :: [((KeyMask, KeySym), X ())]
